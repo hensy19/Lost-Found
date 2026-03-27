@@ -1,0 +1,14 @@
+﻿@model Lost_Found.Models.Item
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <input asp-for="Title" class="form-control mb-2" />
+    <input asp-for="Category" class="form-control mb-2" />
+    <input asp-for="Location" class="form-control mb-2" />
+    <textarea asp-for="Description" class="form-control mb-2"></textarea>
+
+    <button class="btn btn-success">Update</button>
+
+</form>

@@ -1,0 +1,103 @@
+﻿/* 🌿 Background using your palette */
+body {
+    background: linear-gradient(135deg, #a8d5c0, #0b6b3a);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Card */
+.report-card {
+    max-width: 600px;
+    margin: auto;
+    border-radius: 18px;
+    border: none;
+    background: #ffffff;
+}
+
+/* Heading */
+h3 {
+    font-weight: 600;
+    color: #0b6b3a;
+}
+/* 🔁 Toggle Container */
+.toggle-container {
+    display: flex;
+    justify-content: center;
+}
+
+/* Pill */
+.toggle-pill {
+    position: relative;
+    display: flex;
+    width: 220px;
+    background: #e6f4ec;
+    border-radius: 30px;
+    padding: 5px;
+}
+
+/* Sliding background */
+.toggle-slider {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: #0b6b3a;
+    border-radius: 30px;
+    transition: 0.3s ease;
+    left: 0;
+    top: 0;
+}
+
+/* Buttons */
+.toggle-option {
+    flex: 1;
+    border: none;
+    background: transparent;
+    z-index: 2;
+    font-weight: 600;
+    color: #0b6b3a;
+    padding: 8px;
+    cursor: pointer;
+}
+
+    /* Active text */
+    .toggle-option.active {
+        color: white;
+    }
+/* Inputs */
+.custom-input {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #cce3d6;
+}
+
+    .custom-input:focus {
+        border-color: #0b6b3a;
+        box-shadow: 0 0 5px rgba(11, 107, 58, 0.3);
+    }
+
+/* File Upload */
+.file-upload {
+    border: 2px dashed #a8d5c0;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f6fbf8;
+}
+
+/* Submit Button */
+.submit-btn {
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 600;
+    background: #0b6b3a;
+    color: white;
+    border: none;
+}
+
+    .submit-btn:hover {
+        background: #09572f;
+    }
+
+/* Labels */
+label {
+    font-weight: 500;
+    color: #0b6b3a;
+}

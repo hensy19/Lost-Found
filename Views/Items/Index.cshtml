@@ -1,0 +1,159 @@
+﻿@model List<Lost_Found.Models.Item>
+
+<link rel="stylesheet" href="~/css/browse-items.css" />
+
+<div class="container mt-4">
+
+    <!-- 🔍 Header -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Browse Items</h2>
+        <p class="text-muted">@Model.Count items found</p>
+    </div>
+
+    <!-- 🔎 Glass Filter Bar -->
+    <div class="filter-bar mb-4">
+
+        <input type="text" id="searchBox"
+               placeholder="Search items..."
+               onkeyup="filterItems()" />
+
+        <select id="categoryFilter" onchange="filterItems()">
+            <option value="">All Categories</option>
+            <option>Electronics</option>
+            <option>Accessories</option>
+            <option>Documents</option>
+            <option>Clothing</option>
+            <option>Books</option>
+        </select>
+
+        <select id="typeFilter" onchange="filterItems()">
+            <option value="">All</option>
+            <option>Lost</option>
+            <option>Found</option>
+        </select>
+
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="text-center mt-5">
+            <h5>No items found 😕</h5>
+        </div>
+    }
+    <!-- 🧾 Items Grid -->
+    <div class="row g-4" id="itemsContainer">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 item-card"
+                 data-title="@item.Title"
+                 data-category="@item.Category"
+                 data-type="@item.Type">
+
+                <div class="item-card-box">
+
+                    <!-- Image -->
+                    <div class="img-box">
+                        <img src="@(item.ImagePath ?? "/images/default.png")" />
+                    </div>
+
+                    <!-- Content -->
+                    <div class="content">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <h5>@item.Title</h5>
+
+                            <div class="d-flex gap-2">
+
+                                <!-- Type Badge -->
+                                <span class="badge bg-danger">@item.Type</span>
+
+                                <!-- Status Badge -->
+                                <span class="badge bg-success">@item.Status</span>
+
+                            </div>
+
+                        </div>
+                        <div class="d-flex justify-content-between mt-3">
+
+                        </div>
+                        <p class="category">@item.Category</p>
+
+                        <p class="location">📍 @item.Location</p>
+
+                        <p class="date">
+                            @item.Date.ToString("MMM dd, yyyy")
+                        </p>
+
+                    </div>
+                    <!-- 🔍 View Details Modal -->
+                    <a href="/Items/Details/@item.Id" class="btn btn-outline-dark btn-sm">
+                        View Details
+                    </a>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button id="loadMoreBtn" class="btn btn-dark">Load More</button>
+                    </div>
+
+                </div>
+        }
+
+    </div>
+
+</div>
+ <script>
+    function filterItems() {
+        let search = document.getElementById("searchBox").value.toLowerCase();
+        let category = document.getElementById("categoryFilter").value;
+        let type = document.getElementById("typeFilter").value;
+
+        let items = document.querySelectorAll(".item-card");
+
+        items.forEach(item => {
+            let title = item.dataset.title.toLowerCase();
+            let itemCategory = item.dataset.category;
+            let itemType = item.dataset.type;
+
+            let matchSearch = title.includes(search);
+            let matchCategory = category === "" || itemCategory === category;
+            let matchType = type === "" || itemType === type;
+
+            item.style.display = (matchSearch && matchCategory && matchType)
+                ? "block" : "none";
+        });
+    }
+
+    /* 🔍 Modal Functions */
+    function openModal(title, desc, location, img) {
+        document.getElementById("itemModal").style.display = "block";
+
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalDesc").innerText = desc;
+        document.getElementById("modalLocation").innerText = "📍 " + location;
+        document.getElementById("modalImg").src = img || "/images/default.png";
+    }
+
+    function closeModal() {
+        document.getElementById("itemModal").style.display = "none";
+    }
+
+    /* 🔄 Load More */
+    let visibleItems = 6;
+
+    function showItems() {
+        let items = document.querySelectorAll(".item-card");
+
+        items.forEach((item, index) => {
+            item.style.display = index < visibleItems ? "block" : "none";
+        });
+    }
+
+    document.getElementById("loadMoreBtn").addEventListener("click", () => {
+        visibleItems += 3;
+        showItems();
+    });
+
+    window.onload = showItems;
+
+</script>
+
