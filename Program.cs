@@ -1,4 +1,11 @@
+
+using Lost_Found.DBContext;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//registering the connection string using studentdb class
+builder.Services.AddDbContext<Lost_FoundDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("con")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
