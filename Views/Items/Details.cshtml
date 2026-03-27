@@ -1,0 +1,200 @@
+﻿@model Lost_Found.Models.Item
+
+<link rel="stylesheet" href="~/css/details.css" />
+
+<div class="container mt-4">
+
+    <!-- 🔙 Back -->
+    <a href="/Items/Index" class="back-btn">← Back</a>
+
+    <div class="row mt-3">
+
+        <!-- 🖼️ Image -->
+        <div class="col-md-6">
+            <div class="image-box">
+                <img src="@(Model.ImagePath ?? "/images/default.png")" />
+            </div>
+        </div>
+
+        <!-- 📄 Details -->
+        <div class="col-md-6">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@Model.Title</h2>
+
+                @if (Model.Type == "Lost")
+                {
+                    <span class="badge lost">Lost</span>
+                }
+                else
+                {
+                    <span class="badge found">Found</span>
+                }
+            </div>
+
+            <div class="d-flex gap-2 mb-2">
+                <span class="badge bg-danger">@Model.Type</span>
+                <span class="badge bg-success">@Model.Status</span>
+            </div>
+
+            <p class="category">@Model.Category</p>
+            <p class="info">📍 @Model.Location</p>
+            <p class="info">📅 @Model.Date.ToString("MMMM dd, yyyy")</p>
+            <p class="info">👤 Reported by User</p>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-dark btn-sm"
+                        onclick="openEditModal(@Model.Id, '@Model.Title', '@Model.Category', '@Model.Location', '@Model.Description')">
+                    Edit
+                </button>               
+                <a href="/Items/Delete/@Model.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+            </div>
+
+            <!-- 📄 Description -->
+            <div class="card-box mt-3">
+                <h5>Description</h5>
+                <p>@Model.Description</p>
+            </div>
+
+            <!-- ⏳ Timeline -->
+            <div class="card-box mt-3">
+                <h5>Status Timeline</h5>
+
+                <div class="timeline">
+
+                    <div class="step active">
+                        <span>✔</span>
+                        <div>
+                            <p>Reported</p>
+                            <small>@Model.Date.ToString("MMM dd, yyyy")</small>
+                        </div>
+                    </div>
+
+                    <div class="step @(Model.Status != "Active" ? "active" : "")">
+                        <span>✔</span>
+                        <div>
+                            <p>Under Review</p>
+                            <small>@Model.Date.ToString("MMM dd, yyyy")</small>
+                        </div>
+                    </div>
+
+                    <div class="step @(Model.Status == "Claimed" || Model.Status == "Resolved" ? "active" : "")">
+                        <span>✔</span>
+                        <div><p>Claimed</p></div>
+                    </div>
+
+                    <div class="step @(Model.Status == "Verified" || Model.Status == "Resolved" ? "active" : "")">
+                        <span>✔</span>
+                        <div><p>Verified</p></div>
+                    </div>
+
+                    <div class="step @(Model.Status == "Resolved" ? "active" : "")">
+                        <span>✔</span>
+                        <div><p>Resolved</p></div>
+                    </div>
+
+                </div>
+                    <button class="btn btn-warning mt-3"
+                            onclick="requestClaim(@Model.Id, '@Model.Title', this)">
+                        Request Claim
+                    </button>
+                </div>
+            <div id="editModal" class="custom-modal">
+
+                <div class="modal-box slide-up">
+
+                    <h4>Edit Item</h4>
+
+                    <input type="hidden" id="editId" />
+
+                    <input id="editTitle" class="form-control mb-2" />
+
+                    <select id="editCategory" class="form-control mb-2">
+                        <option>Electronics</option>
+                        <option>Accessories</option>
+                        <option>Documents</option>
+                    </select>
+
+                    <select id="editLocation" class="form-control mb-2">
+                        <option>Library</option>
+                        <option>Cafeteria</option>
+                    </select>
+
+                    <textarea id="editDescription" class="form-control mb-2"></textarea>
+
+                    <!-- 🖼️ Image -->
+                    <input type="file" id="editImage" class="form-control mb-3" />
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                        <button class="btn btn-success" onclick="saveEdit()">Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+
+    // Open modal with data
+    function openEditModal(id, title, category, location, desc) {
+        document.getElementById("editModal").style.display = "block";
+
+        document.getElementById("editId").value = id;
+        document.getElementById("editTitle").value = title;
+        document.getElementById("editCategory").value = category;
+        document.getElementById("editLocation").value = location;
+        document.getElementById("editDescription").value = desc;
+    }
+
+    // Close modal
+    function closeEditModal() {
+        document.getElementById("editModal").style.display = "none";
+    }
+
+   
+
+</script>
+<div id="toast" class="toast-msg">Updated Successfully ✅</div>
+<script>
+
+    function showToast() {
+        let toast = document.getElementById("toast");
+        toast.style.display = "block";
+
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 2000);
+    }
+
+    // SAVE EDIT
+    function saveEdit() {
+
+        let formData = new FormData();
+
+        formData.append("Id", document.getElementById("editId").value);
+        formData.append("Title", document.getElementById("editTitle").value);
+        formData.append("Category", document.getElementById("editCategory").value);
+        formData.append("Location", document.getElementById("editLocation").value);
+        formData.append("Description", document.getElementById("editDescription").value);
+
+        let file = document.getElementById("editImage").files[0];
+        if (file) {
+            formData.append("imageFile", file);
+        }
+
+        fetch('/Items/EditWithImage', {
+            method: 'POST',
+            body: formData
+        })
+        .then(() => {
+            closeEditModal();
+            showToast();
+            setTimeout(() => location.reload(), 1000);
+        });
+    }
+
+</script>
