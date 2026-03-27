@@ -13,11 +13,11 @@ namespace Lost_Found.Models
         public int user_id { get; set; }
 
         [ForeignKey("user_id")]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [Required(ErrorMessage = "Message is required")]
         [MaxLength(500, ErrorMessage = "Message cannot exceed 500 characters")]
-        public string message { get; set; }
+        public string? message { get; set; }
 
         [Required]
         public bool isRead { get; set; } = false;

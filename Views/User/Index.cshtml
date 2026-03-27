@@ -1,0 +1,291 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lost & Found - Find What You Lost, Return What You Found</title>
+    <link rel="stylesheet" href="/css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="home-page">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="hp-navbar">
+        <div class="hp-container hp-navbar-inner">
+            <a href="/User/Index" class="hp-logo">
+                <svg class="hp-logo-icon" width="26" height="26" viewBox="0 0 24 24" fill="#1a7a4c">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+                <span>Lost & Found</span>
+            </a>
+            <ul class="hp-nav-links">
+                <li><a href="/User/Index" class="active">Home</a></li>
+                <li><a href="#">Browse Items</a></li>
+                <li><a href="#">Post Item</a></li>
+                <li><a href="#">Found Item</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="hp-nav-auth">
+                <a href="/User/Login" class="hp-nav-login">Login</a>
+                <a href="/User/Register" class="hp-nav-register">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hp-hero">
+        <div class="hp-container hp-hero-inner">
+            <div class="hp-hero-content">
+                <h1 class="hp-hero-title">
+                    Find What You<br />
+                    <span class="hp-text-green">Lost,</span> Return<br />
+                    What You <span class="hp-text-green">Found</span>
+                </h1>
+                <p class="hp-hero-subtitle">Helping students reconnect with their belongings easily. A trusted organic ecosystem for the modern campus.</p>
+                <div class="hp-hero-buttons">
+                    <a href="#" class="hp-btn hp-btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                        Report Lost Item
+                    </a>
+                    <a href="#" class="hp-btn hp-btn-outline">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                        Report Found Item
+                    </a>
+                </div>
+            </div>
+            <div class="hp-hero-image">
+                <div class="hp-hero-blob hp-blob-1"></div>
+                <div class="hp-hero-blob hp-blob-2"></div>
+                <img src="/images/hero-illustration.png" alt="Student illustration" />
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SEARCH BAR ========== -->
+    <section class="hp-search">
+        <div class="hp-container">
+            <div class="hp-search-bar">
+                <div class="hp-search-input-wrap">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" placeholder="Search by title or found item..." class="hp-search-input" />
+                </div>
+                <div class="hp-search-divider"></div>
+                <select class="hp-search-select">
+                    <option>All Categories</option>
+                    <option>Electronics</option>
+                    <option>Books</option>
+                    <option>ID Cards</option>
+                    <option>Bags</option>
+                </select>
+                <div class="hp-search-divider"></div>
+                <select class="hp-search-select">
+                    <option>All Locations</option>
+                    <option>Library</option>
+                    <option>Cafeteria</option>
+                    <option>Gymnasium</option>
+                </select>
+                <button class="hp-search-btn">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== EXPLORE CATEGORIES ========== -->
+    <section class="hp-categories">
+        <div class="hp-container">
+            <div class="hp-section-header">
+                <div>
+                    <h2 class="hp-section-title">Explore Categories</h2>
+                    <p class="hp-section-subtitle">Browse items by their department or type</p>
+                </div>
+                <a href="#" class="hp-view-all">View All</a>
+            </div>
+            <div class="hp-categories-grid">
+                <div class="hp-category-item">
+                    <div class="hp-category-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a7a4c" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                    </div>
+                    <span>Electronics</span>
+                </div>
+                <div class="hp-category-item">
+                    <div class="hp-category-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a7a4c" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                    </div>
+                    <span>Books</span>
+                </div>
+                <div class="hp-category-item">
+                    <div class="hp-category-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a7a4c" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                    </div>
+                    <span>ID Cards</span>
+                </div>
+                <div class="hp-category-item">
+                    <div class="hp-category-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a7a4c" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                    </div>
+                    <span>Bags</span>
+                </div>
+                <div class="hp-category-item">
+                    <div class="hp-category-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="#1a7a4c"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                    </div>
+                    <span>Others</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RECENTLY REPORTED ========== -->
+    <section class="hp-reported">
+        <div class="hp-container">
+            <div class="hp-section-header">
+                <h2 class="hp-section-title">Recently Reported</h2>
+                <div class="hp-nav-arrows">
+                    <button class="hp-arrow-btn">&lsaquo;</button>
+                    <button class="hp-arrow-btn">&rsaquo;</button>
+                </div>
+            </div>
+            <div class="hp-items-grid">
+                <div class="hp-item-card">
+                    <div class="hp-item-img-wrap">
+                        <img src="/images/macbook-charger.png" alt="MacBook Pro Charger" />
+                        <span class="hp-tag-found">FOUND</span>
+                    </div>
+                    <div class="hp-item-info">
+                        <h4>MacBook Pro Charger</h4>
+                        <p>5 hours ago at Library</p>
+                        <a href="#" class="hp-btn-details">View Details</a>
+                    </div>
+                </div>
+                <div class="hp-item-card">
+                    <div class="hp-item-img-wrap">
+                        <img src="/images/calculus-textbook.png" alt="Calculus Textbook" />
+                        <span class="hp-tag-found">FOUND</span>
+                    </div>
+                    <div class="hp-item-info">
+                        <h4>Calculus Textbook</h4>
+                        <p>7 days ago at Cafeteria</p>
+                        <a href="#" class="hp-btn-details">View Details</a>
+                    </div>
+                </div>
+                <div class="hp-item-card">
+                    <div class="hp-item-img-wrap">
+                        <img src="/images/analog-wristwatch.png" alt="Analog Wristwatch" />
+                        <span class="hp-tag-found">FOUND</span>
+                    </div>
+                    <div class="hp-item-info">
+                        <h4>Analog Wristwatch</h4>
+                        <p>8 hours ago at Gym</p>
+                        <a href="#" class="hp-btn-details">View Details</a>
+                    </div>
+                </div>
+                <div class="hp-item-card">
+                    <div class="hp-item-img-wrap">
+                        <img src="/images/blue-herschel-bag.png" alt="Blue Herschel Bag" />
+                        <span class="hp-tag-found">FOUND</span>
+                    </div>
+                    <div class="hp-item-info">
+                        <h4>Blue Herschel Bag</h4>
+                        <p>9 hours ago at Student Union</p>
+                        <a href="#" class="hp-btn-details">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <section class="hp-how-it-works">
+        <div class="hp-container">
+            <div class="hp-section-header hp-centered">
+                <h2 class="hp-section-title">How It Works</h2>
+                <p class="hp-section-subtitle">Three simple steps to reconnect you with your essentials. No stress, just community support.</p>
+            </div>
+            <div class="hp-steps">
+                <div class="hp-step">
+                    <div class="hp-step-number">1</div>
+                    <div class="hp-step-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a7a4c" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
+                    </div>
+                    <h3>Report Item</h3>
+                    <p>Fill your digital form with item details and where it was last seen or found.</p>
+                </div>
+                <div class="hp-step">
+                    <div class="hp-step-number">2</div>
+                    <div class="hp-step-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a7a4c" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    </div>
+                    <h3>Search or Match</h3>
+                    <p>Our system will suggest potential matches based on category and proximity.</p>
+                </div>
+                <div class="hp-step">
+                    <div class="hp-step-number">3</div>
+                    <div class="hp-step-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a7a4c" stroke-width="1.5"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <h3>Connect & Return</h3>
+                    <p>Coordinate a safe meeting point on campus and get your item back.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA SECTION ========== -->
+    <section class="hp-cta">
+        <div class="hp-container">
+            <div class="hp-cta-box">
+                <h2>Found someone's property?</h2>
+                <p>Be a campus hero. Every item returned strengthens our student community trust.</p>
+                <a href="#" class="hp-cta-btn">Submit a Found Report</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="hp-footer">
+        <div class="hp-container">
+            <div class="hp-footer-grid">
+                <div class="hp-footer-col">
+                    <div class="hp-footer-logo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="#1a7a4c"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        <span>Lost & Found</span>
+                    </div>
+                    <p>A dedicated platform for university students to report and retrieve lost or found items on campus efficiently and securely through our trusted community network.</p>
+                </div>
+                <div class="hp-footer-col">
+                    <h4>RESOURCES</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Post Item</a></li>
+                        <li><a href="#">My Account</a></li>
+                    </ul>
+                </div>
+                <div class="hp-footer-col">
+                    <h4>LEGAL</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="hp-footer-col">
+                    <h4>STAY UPDATED</h4>
+                    <p>Subscribe to campus alerts to get lost item notifications.</p>
+                    <div class="hp-subscribe">
+                        <input type="email" placeholder="Your email address" />
+                        <button>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="hp-footer-bottom">
+                <p>&copy; 2024 Lost & Found. Built for students.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
