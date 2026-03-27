@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Lost_Found.Models;
 using Lost_Found.DBContext;
 
@@ -15,6 +15,10 @@ namespace Lost_Found.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login");
+            }
             return View();
         }
 
