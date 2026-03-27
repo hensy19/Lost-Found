@@ -22,6 +22,15 @@ namespace Lost_Found.Controllers
             return View();
         }
 
+        public IActionResult Profile()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return RedirectToAction("Login");
+            }
+            return View();
+        }
+
         public IActionResult Register()
         {
             return View();

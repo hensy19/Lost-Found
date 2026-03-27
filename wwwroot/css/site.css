@@ -1144,3 +1144,310 @@ body.home-page {
         grid-template-columns: 1fr;
     }
 }
+
+/* ============================================
+   PROFILE PAGE STYLES
+   ============================================ */
+
+.hp-page-bg {
+    background-color: #f6f8fb;
+    padding: 40px 0 80px;
+    min-height: calc(100vh - 150px);
+}
+
+.hp-profile-container {
+    max-width: 1040px;
+}
+
+/* Header Card */
+.hp-profile-header {
+    background: linear-gradient(135deg, #ffffff 60%, #ecfdf3 100%);
+    border-radius: 20px;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    margin-bottom: 24px;
+}
+
+.hp-profile-header-content {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.hp-profile-avatar-wrap {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    padding: 4px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.hp-profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.hp-profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hp-profile-name-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hp-profile-name {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.hp-badge-student {
+    background: #86ead4;
+    color: #0f766e;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+}
+
+.hp-profile-major {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.hp-profile-actions {
+    display: flex;
+    align-items: center;
+}
+
+.hp-btn-edit-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #5ba36b;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(91,163,107,0.3);
+}
+
+.hp-btn-edit-profile:hover {
+    background: #4b8f58;
+}
+
+/* Stats Row */
+.hp-stats-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.hp-stat-card {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+}
+
+.hp-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #f0fdf4;
+}
+
+.hp-stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1;
+}
+
+.hp-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Tabs */
+.hp-tabs-container {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.hp-tabs {
+    display: inline-flex;
+    background: #f1f3f5;
+    padding: 4px;
+    border-radius: 24px;
+}
+
+.hp-tab {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.hp-tab.active {
+    background: white;
+    color: #1a7a4c;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+/* Reports Grid */
+.hp-reports-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.hp-report-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+}
+
+.hp-report-img-wrapper {
+    position: relative;
+    height: 180px;
+    width: 100%;
+}
+
+.hp-report-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hp-report-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+.hp-report-badge.found {
+    background: #1a7a4c;
+}
+
+.hp-report-badge.searching {
+    background: #0d9488;
+}
+
+.hp-report-body {
+    padding: 24px 24px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hp-report-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.hp-report-desc {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hp-report-footer {
+    padding: 0 24px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hp-report-date {
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+    letter-spacing: 0.5px;
+}
+
+.hp-report-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a7a4c;
+    text-decoration: none;
+}
+
+.hp-report-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 991px) {
+    .hp-reports-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hp-profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .hp-stats-row {
+        flex-wrap: wrap;
+    }
+    
+    .hp-stat-card {
+        flex: 1 1 calc(50% - 10px);
+    }
+    
+    .hp-reports-grid {
+        grid-template-columns: 1fr;
+    }
+}
