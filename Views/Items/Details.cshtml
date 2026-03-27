@@ -43,6 +43,21 @@
                     <p class="hp-profile-major" style="margin-bottom: 24px;">@Model.Category &bull; 📍 @Model.Location</p>
                     <p class="hp-profile-major" style="margin-bottom: 24px;">📅 @Model.Date.ToString("MMMM dd, yyyy")</p>
 
+                    @if (Model.WasRejected)
+                    {
+                        <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 12px;">
+                            <div style="color: #d97706; font-size: 20px;">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 14px; font-weight: 700; color: #92400e;">Previously Rejected Claim</h4>
+                                <p style="margin: 4px 0 0 0; font-size: 13px; color: #b45309; line-height: 1.4;">
+                                    This item has been involved in a rejected claim request. To ensure a successful claim, please provide **more detailed proof** of ownership or finding in your next request.
+                                </p>
+                            </div>
+                        </div>
+                    }
+
                     <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); margin-bottom: 24px;">
                         <h4 style="font-size:15px; font-weight:700; color:#111827; margin-bottom: 8px;">Description</h4>
                         <p style="font-size: 14px; color: #6b7280; line-height: 1.6; margin: 0;">@Model.Description</p>
@@ -69,8 +84,8 @@
 
                             <!-- Claimed -->
                             <div style="text-align: center; flex: 1;">
-                                <div style="width:26px; height:26px; border-radius:50%; background:@(Model.Status == "Claimed" ? "#10b981" : "#e5e7eb"); border:4px solid white; margin:0 auto; box-shadow: 0 0 0 1px @(Model.Status == "Claimed" ? "#10b981" : "#e5e7eb");"></div>
-                                <p style="font-size: 12px; font-weight: 600; color: @(Model.Status == "Claimed" ? "#111827" : "#9ca3af"); margin: 8px 0 0 0;">Claimed</p>
+                                <div style="width:26px; height:26px; border-radius:50%; background:@((Model.Status == "Claimed" || Model.Status == "Resolved") ? "#10b981" : "#e5e7eb"); border:4px solid white; margin:0 auto; box-shadow: 0 0 0 1px @((Model.Status == "Claimed" || Model.Status == "Resolved") ? "#10b981" : "#e5e7eb");"></div>
+                                <p style="font-size: 12px; font-weight: 600; color: @((Model.Status == "Claimed" || Model.Status == "Resolved") ? "#111827" : "#9ca3af"); margin: 8px 0 0 0;">Claimed</p>
                             </div>
 
                             <!-- Resolved/Verified -->
@@ -100,16 +115,26 @@
                     }
                     else if (Model.Status == "Claimed")
                     {
+                        <button class="hp-btn-edit-profile" onclick="resolveItem(@Model.Id, this)" style="background: #10b981; padding: 12px 24px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><path d="M5 13l4 4L19 7"/></svg>
+                            <span style="vertical-align: middle;">Confirm Receipt & Resolve</span>
+                        </button>
+                    }
+                    else if (Model.Status == "Resolved")
+                    {
                         <button class="hp-btn-edit-profile" style="background: #10b981; padding: 12px 24px; cursor: default; box-shadow: none;" disabled>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><path d="M5 13l4 4L19 7"/></svg>
-                            <span style="vertical-align: middle;">Item Claimed</span>
+                            <span style="vertical-align: middle;">Item Resolved</span>
                         </button>
                     }
 
-                    <div style="margin-left: auto; display: flex; gap: 8px;">
-                        <a href="/Items/Edit/@Model.Id" class="btn btn-outline-dark" style="border-radius: 20px; font-weight: 600;">Edit</a>
-                        <a href="/Items/Delete/@Model.Id" class="btn btn-outline-danger" style="border-radius: 20px; font-weight: 600;" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
-                    </div>
+                    @if (Model.Status == "Active" || Model.Status == "Under Review")
+                    {
+                        <div style="margin-left: auto; display: flex; gap: 8px;">
+                            <a href="/Items/Edit/@Model.Id" class="btn btn-outline-dark" style="border-radius: 20px; font-weight: 600;">Edit</a>
+                            <a href="/Items/Delete/@Model.Id" class="btn btn-outline-danger" style="border-radius: 20px; font-weight: 600;" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -143,6 +168,28 @@
                 alert("Failed to submit claim request.");
                 btn.disabled = false;
                 btn.innerHTML = "Request Claim";
+            }
+        });
+    }
+
+    function resolveItem(itemId, btn) {
+        if (!confirm("Are you sure you have received your property? This will mark the case as Resolved.")) return;
+        
+        btn.disabled = true;
+        btn.innerHTML = "Resolving...";
+
+        fetch('/Items/ResolveItem/' + itemId, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('toast').innerHTML = "Record Successfully Resolved ✅";
+                document.getElementById('toast').style.display = "block";
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                alert("Failed to resolve item record.");
+                btn.disabled = false;
+                btn.innerHTML = "Confirm Receipt & Resolve";
             }
         });
     }

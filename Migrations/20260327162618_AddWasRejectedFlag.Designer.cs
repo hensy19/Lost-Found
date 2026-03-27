@@ -4,6 +4,7 @@ using Lost_Found.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lost_Found.Migrations
 {
     [DbContext(typeof(Lost_FoundDB))]
-    partial class Lost_FoundDBModelSnapshot : ModelSnapshot
+    [Migration("20260327162618_AddWasRejectedFlag")]
+    partial class AddWasRejectedFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

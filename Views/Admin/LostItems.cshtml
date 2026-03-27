@@ -55,9 +55,12 @@
                             <a href="@Url.Action("Details", "Items", new { id = item.Id })" class="btn-action" style="color: #3b82f6;" title="Quick View">
                                 <i class="fas fa-external-link-alt"></i>
                             </a>
-                            <a href="@Url.Action("Edit", "Items", new { id = item.Id })" class="btn-action" style="color: #64748b;" title="Edit Registry Entry">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            @if (item.Status != "Claimed")
+                            {
+                                <a href="@Url.Action("Edit", "Items", new { id = item.Id })" class="btn-action" style="color: #64748b;" title="Edit Registry Entry">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            }
                         </td>
                     </tr>
                 }

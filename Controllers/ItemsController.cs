@@ -163,8 +163,23 @@ namespace Lost_Found.Controllers
             var item = _db.Items.FirstOrDefault(x => x.Id == id);
             if (item != null && item.Status == "Under Review")
             {
-                // Set status to Rejected so it reflects in dashboards
-                item.Status = "Rejected";
+                // Revert to Active so user can claim again, but set history flag
+                item.Status = "Active";
+                item.claimed_by_user_id = null;
+                item.WasRejected = true;
+                _db.SaveChanges();
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult ResolveItem(int id)
+        {
+            var item = _db.Items.FirstOrDefault(x => x.Id == id);
+            if (item != null && item.Status == "Claimed")
+            {
+                // Final state: Resolved
+                item.Status = "Resolved";
                 _db.SaveChanges();
             }
             return Ok();
