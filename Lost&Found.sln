@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lost&Found", "Lost&Found.csproj", "{0167A396-D2F1-46A9-9291-599D563FEB47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0167A396-D2F1-46A9-9291-599D563FEB47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0167A396-D2F1-46A9-9291-599D563FEB47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0167A396-D2F1-46A9-9291-599D563FEB47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0167A396-D2F1-46A9-9291-599D563FEB47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D45D510-8999-4DAC-9075-F7A173D0E950}
+	EndGlobalSection
+EndGlobal
