@@ -56,9 +56,59 @@
 
     <!-- Main Content Area -->
     <div class="main-content">
+        <!-- New Admin Topbar -->
+        <header class="admin-header">
+            <div class="header-breadcrumbs">
+                <span style="color: #64748b; font-size: 14px; font-weight: 500;">
+                    <i class="fas fa-home" style="margin-right: 4px;"></i> Admin / 
+                    <span style="color: #0f172a; font-weight: 600;">@ViewData["Title"]</span>
+                </span>
+            </div>
+            
+            <div class="header-actions">
+                <a href="@Url.Action("Admin", "Notifications")" class="notification-bell" title="Alerts" style="text-decoration: none;">
+                    <i class="fas fa-bell"></i>
+                    <span class="admin-badge"></span>
+                </a>
+                
+                <div class="admin-user-info">
+                    <div class="admin-avatar">
+                        @{
+                            var name = Context.Session.GetString("UserName") ?? "Admin";
+                            char initial = !string.IsNullOrEmpty(name) ? name[0] : 'A';
+                        }
+                        @initial
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 14px; font-weight: 600; color: #0f172a;">@name</span>
+                        <span style="font-size: 11px; color: #10b981; font-weight: 600; text-transform: uppercase;">Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
         @RenderBody()
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function updateAdminBadge() {
+                $.get('/Notifications/GetUnreadCount', function(count) {
+                    const badge = $('.admin-badge');
+                    if (count > 0) {
+                        badge.text(count > 9 ? '9+' : count).css('display', 'flex');
+                    } else {
+                        badge.hide();
+                    }
+                });
+            }
+            if ($('.notification-bell').length > 0) {
+                updateAdminBadge();
+                setInterval(updateAdminBadge, 30000);
+            }
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

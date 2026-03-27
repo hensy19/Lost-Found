@@ -14,12 +14,19 @@
 
 <div style="max-width: 600px;">
     <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;">
-        <form asp-action="EditAdminProfile" method="post">
+        <form asp-action="EditAdminProfile" method="post" onsubmit="return validateAdminProfile(event)" novalidate>
             @Html.AntiForgeryToken()
+
+            <!-- Validation Errors Display -->
+            <div id="validationErrors" class="validation-errors" style="display: none;">
+                <strong><i class="fas fa-exclamation-triangle"></i> Please fix the following errors:</strong>
+                <ul id="errorList"></ul>
+            </div>
 
             <div style="margin-bottom: 24px;">
                 <label style="display: block; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Full Registered Name</label>
-                <input type="text" name="user_name" value="@Model.user_name" style="width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: #f8fafc;" required />
+                <input type="text" id="adminName" name="user_name" value="@Model.user_name" style="width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: #f8fafc;" />
+                <span class="input-error-text" id="adminNameError"></span>
             </div>
 
             <div style="margin-bottom: 24px;">
@@ -30,7 +37,8 @@
 
             <div style="margin-bottom: 32px;">
                 <label style="display: block; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">New Access Key (Password)</label>
-                <input type="password" name="password" placeholder="Leave blank to keep current" style="width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: #f8fafc;" />
+                <input type="password" id="adminPassword" name="password" placeholder="Leave blank to keep current" style="width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: #f8fafc;" />
+                <span class="input-error-text" id="adminPasswordError"></span>
             </div>
 
             <div style="display: flex; gap: 16px;">
@@ -44,3 +52,5 @@
         </form>
     </div>
 </div>
+
+<script src="~/js/register-validation.js"></script>

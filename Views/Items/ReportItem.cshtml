@@ -21,18 +21,27 @@
                 </button>
             </div>
         </div>
-        <form asp-action="ReportItem" method="post" enctype="multipart/form-data">
+        <form asp-action="ReportItem" method="post" enctype="multipart/form-data" onsubmit="return validateReportItem(event)" novalidate>
+            @Html.AntiForgeryToken()
+
+            <!-- Validation Errors Display -->
+            <div id="validationErrors" class="validation-errors" style="display: none;">
+                <strong><i class="fas fa-exclamation-triangle"></i> Please fix the following errors:</strong>
+                <ul id="errorList"></ul>
+            </div>
 
             <input type="hidden" id="itemType" name="Type" value="Lost" />
 
             <div class="mb-3">
                 <label>Item Name *</label>
-                <input name="Title" class="form-control custom-input" placeholder="e.g. Blue Backpack" required />
+                <input id="itemTitle" name="Title" class="form-control custom-input" placeholder="e.g. Blue Backpack" />
+                <span class="input-error-text" id="itemTitleError"></span>
             </div>
 
             <div class="mb-3">
                 <label>Category *</label>
-                <select name="Category" class="form-control custom-input" required>
+                <select id="itemCategory" name="Category" class="form-control custom-input">
+                    <option value="">Select Category</option>
                     <option>Electronics</option>
                     <option>Accessories</option>
                     <option>Documents</option>
@@ -40,11 +49,13 @@
                     <option>Books</option>
                     <option>Others</option>
                 </select>
+                <span class="input-error-text" id="itemCategoryError"></span>
             </div>
 
             <div class="mb-3">
                 <label>Location *</label>
-                <select name="Location" class="form-control custom-input" required>
+                <select id="itemLocation" name="Location" class="form-control custom-input">
+                    <option value="">Select Location</option>
                     <option>Library</option>
                     <option>Cafeteria</option>
                     <option>Classroom</option>
@@ -52,20 +63,23 @@
                     <option>Playground</option>
                     <option>Parking Area</option>
                 </select>
+                <span class="input-error-text" id="itemLocationError"></span>
             </div>
             <div class="mb-3">
                 <label>Date *</label>
-				<input type="date" name="Date" class="form-control custom-input" required />        
+				<input type="date" id="itemDate" name="Date" class="form-control custom-input" />        
+                <span class="input-error-text" id="itemDateError"></span>
             </div>
 
             <div class="mb-3">
                 <label>Description *</label>
-                <textarea name="Description" class="form-control custom-input" required></textarea>
+                <textarea id="itemDescription" name="Description" class="form-control custom-input"></textarea>
+                <span class="input-error-text" id="itemDescriptionError"></span>
             </div>
 
             <div class="mb-3">
                 <label>Upload Image (Optional)</label>
-                <input type="file" name="imageFile" class="form-control file-upload" />
+                <input type="file" id="itemImage" name="imageFile" class="form-control file-upload" />
             </div>
 
             <button class="btn submit-btn w-100">Submit</button>
@@ -73,6 +87,8 @@
         </form>
     </div>
 </div>
+
+<script src="~/js/register-validation.js"></script>
 <script>
     function setType(type) {
         if (!type) return;

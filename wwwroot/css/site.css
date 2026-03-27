@@ -479,6 +479,46 @@ body.home-page {
     text-decoration: none;
 }
 
+/* ---------- Notifications ---------- */
+.hp-nav-notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f9fafb;
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid #e5e7eb;
+}
+
+.hp-nav-notification:hover {
+    background: #f3f4f6;
+    color: #1a7a4c;
+    border-color: #1a7a4c;
+}
+
+.hp-notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #ef4444;
+    color: white;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
 /* ---------- Hero Section ---------- */
 .hp-hero {
     padding: 60px 0 40px;

@@ -18,9 +18,9 @@
 
         <!--  Filter Bar -->
         <div class="filter-bar mb-5" style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-            <input type="text" id="searchBox" placeholder="Search by title..." onkeyup="filterItems()" class="form-control" style="flex: 1; border-radius: 12px; border: 1px solid #e5e7eb; padding: 12px 16px;" />
+            <input type="text" id="searchBox" placeholder="Search by title, location, date or category..." onkeyup="filterItems()" class="form-control" style="flex: 1; border-radius: 12px; border: 1px solid #e5e7eb; padding: 12px 16px;" />
 
-            <select id="categoryFilter" onchange="filterItems()" class="form-select" style="width: auto; border-radius: 12px; border: 1px solid #e5e7eb; padding: 12px 16px;">
+            <select id="categoryFilter" onchange="filterItems()" class="form-select" style="width: auto; min-width: 160px; border-radius: 12px; border: 1px solid #e5e7eb; padding: 12px 36px 12px 16px;">
                 <option value="">All Categories</option>
                 <option>Electronics</option>
                 <option>Accessories</option>
@@ -30,7 +30,7 @@
                 <option>Bags</option>
             </select>
 
-            <select id="typeFilter" onchange="filterItems()" class="form-select" style="width: auto; border-radius: 12px; border: 1px solid #e5e7eb; padding: 12px 16px;">
+            <select id="typeFilter" onchange="filterItems()" class="form-select" style="width: auto; min-width: 130px; border-radius: 12px; border: 1px solid #e5e7eb; padding: 12px 36px 12px 16px;">
                 <option value="">All Types</option>
                 <option>Lost</option>
                 <option>Found</option>
@@ -48,7 +48,12 @@
         <div class="hp-items-grid" id="itemsContainer">
             @foreach (var item in Model)
             {
-                <div class="hp-item-card item-filter-card" data-title="@item.Title" data-category="@item.Category" data-type="@item.Type">
+                <div class="hp-item-card item-filter-card" 
+                     data-title="@item.Title" 
+                     data-category="@item.Category" 
+                     data-type="@item.Type"
+                     data-location="@item.Location"
+                     data-date="@item.Date.ToString("MMM dd yyyy")">
                     <a href="/Items/Details/@item.Id" style="text-decoration: none; color: inherit; display: block; height: 100%;">
                         <div class="hp-item-img-wrap">
                             <img src="@(item.ImagePath ?? "/images/default.png")" alt="@item.Title" />
@@ -83,6 +88,15 @@
 </div>
 
 <script>
+    window.onload = function() {
+        var initialCategory = "@ViewBag.Category";
+        if (initialCategory) {
+            var categorySelect = document.getElementById("categoryFilter");
+            categorySelect.value = initialCategory;
+        }
+        filterItems();
+    };
+
     function filterItems() {
         let search = document.getElementById("searchBox").value.toLowerCase();
         let category = document.getElementById("categoryFilter").value;
@@ -92,12 +106,17 @@
 
         items.forEach(item => {
             let title = item.dataset.title.toLowerCase();
-            let itemCategory = item.dataset.category;
-            let itemType = item.dataset.type;
+            let itemCategory = item.dataset.category.toLowerCase();
+            let itemType = item.dataset.type.toLowerCase();
+            let location = item.dataset.location.toLowerCase();
+            let date = item.dataset.date.toLowerCase();
 
-            let matchSearch = title.includes(search);
-            let matchCategory = category === "" || itemCategory === category;
-            let matchType = type === "" || itemType === type;
+            // Combined search across multiple fields
+            let combinedText = `${title} ${itemCategory} ${location} ${date}`;
+            
+            let matchSearch = combinedText.includes(search);
+            let matchCategory = category === "" || itemCategory === category.toLowerCase();
+            let matchType = type === "" || itemType === type.toLowerCase();
 
             item.style.display = (matchSearch && matchCategory && matchType) ? "block" : "none";
         });

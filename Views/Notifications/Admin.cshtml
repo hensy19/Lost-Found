@@ -1,0 +1,85 @@
+@model IEnumerable<Lost_Found.Models.Notification>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Admin Notifications";
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h2>System Alerts</h2>
+        <p>Monitor campus activity and urgent claim requests.</p>
+    </div>
+    @if (Model.Any())
+    {
+        <span class="badge bg-danger rounded-pill px-3 py-2">@Model.Count() New Requests</span>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card shadow-sm border-0 p-5 text-center" style="border-radius: 16px; background: white;">
+        <div style="background: #f1f5f9; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <i class="fas fa-check-double" style="color: #64748b; font-size: 24px;"></i>
+        </div>
+        <h4 style="font-weight: 700; color: #0f172a;">All cleared!</h4>
+        <p style="color: #64748b; margin: 0;">No pending claim requests or item updates require your immediate attention.</p>
+    </div>
+}
+else
+{
+    <div class="notification-container">
+        @foreach (var notification in Model)
+        {
+            <div class="admin-notification" 
+                 id="admin-notify-@notification.notification_id"
+                 style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 16px; transition: all 0.3s ease; position: relative; overflow: hidden; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div style="flex-grow: 1;">
+                        <p style="margin: 0; font-size: 15px; color: #1e293b; font-weight: 500;">@notification.message</p>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+                            <span style="font-size: 12px; color: #94a3b8;"><i class="far fa-clock"></i> @notification.created_at.ToString("MMM dd, h:mm tt")</span>
+                            <span style="font-size: 11px; font-weight: 600; color: #10b981; background: #ecfdf5; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">Review Required</span>
+                        </div>
+                    </div>
+                    <button onclick="dismissAdminNotification(@notification.notification_id)" 
+                            class="btn-dismiss-admin" 
+                            title="Acknowledge" 
+                            style="background: #f8fafc; border: none; width: 32px; height: 32px; border-radius: 8px; color: #94a3b8; cursor: pointer; transition: all 0.2s;">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script>
+    function dismissAdminNotification(id) {
+        $.post('/Notifications/Dismiss/' + id, function() {
+            const card = document.getElementById('admin-notify-' + id);
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                card.remove();
+                if (document.querySelectorAll('.admin-notification').length === 0) {
+                    location.reload();
+                }
+            }, 300);
+        });
+    }
+</script>
+
+<style>
+    .admin-notification:hover {
+        border-color: #cbd5e1 !important;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
+    }
+    .btn-dismiss-admin:hover {
+        background: #ecfdf5 !important;
+        color: #10b981 !important;
+    }
+</style>

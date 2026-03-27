@@ -23,7 +23,8 @@ namespace Lost_Found.Controllers
             {
                 return RedirectToAction("Login");
             }
-            return View();
+            var recentItems = db.Items.OrderByDescending(i => i.Id).Take(4).ToList();
+            return View(recentItems);
         }
 
         public IActionResult Profile()
