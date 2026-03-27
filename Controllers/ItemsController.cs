@@ -71,8 +71,9 @@ namespace Lost_Found.Controllers
             return View(allItems);
         }
 
-        public IActionResult ReportItem()
+        public IActionResult ReportItem(string type)
         {
+            ViewBag.Type = type;
             return View();
         }
 

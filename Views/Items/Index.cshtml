@@ -14,14 +14,9 @@
                 <h2 class="fw-bold" style="font-size: 36px; color: #111827; margin: 0;">Campus Discovery</h2>
                 <p style="color: #6b7280; font-size: 16px; margin: 4px 0 0 0;">@Model.Count items waiting to be reclaimed.</p>
             </div>
-            <div class="page-actions">
-                <a href="@Url.Action("Report", "Items")" class="btn btn-primary" style="background: #10b981; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
-                    <i class="fas fa-plus-circle me-2"></i> Report Found Item
-                </a>
-            </div>
         </div>
 
-        <!-- 🔎 Filter Bar -->
+        <!--  Filter Bar -->
         <div class="filter-bar mb-5" style="background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
             <input type="text" id="searchBox" placeholder="Search by title..." onkeyup="filterItems()" class="form-control" style="flex: 1; border-radius: 12px; border: 1px solid #e5e7eb; padding: 12px 16px;" />
 

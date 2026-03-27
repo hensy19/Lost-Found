@@ -75,6 +75,7 @@
 </div>
 <script>
     function setType(type) {
+        if (!type) return;
         document.getElementById("itemType").value = type;
 
         let buttons = document.querySelectorAll(".toggle-option");
@@ -85,9 +86,17 @@
         if (type === "Lost") {
             buttons[0].classList.add("active");
             slider.style.left = "0%";
-        } else {
+        } else if (type === "Found") {
             buttons[1].classList.add("active");
             slider.style.left = "50%";
         }
     }
+
+    // Call setType with the value from ViewBag on page load
+    window.onload = function() {
+        var initialType = "@ViewBag.Type";
+        if (initialType) {
+            setType(initialType);
+        }
+    };
 </script>

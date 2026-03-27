@@ -98,7 +98,14 @@
                 </div>
 
                 <!-- Actions -->
-                <div style="display: flex; gap: 12px; align-items: center; border-top: 1px solid #e5e7eb; padding-top: 24px;">
+                    @* Only the user who filled the form (owner) and is currently logged in can see Edit and Delete buttons *@
+                    @using Microsoft.AspNetCore.Http
+                    @{
+                        var currentUserId = Context.Session.GetInt32("UserId");
+                        bool isOwner = currentUserId != null && currentUserId == Model.user_id;
+                        bool isClaimer = currentUserId != null && currentUserId == Model.claimed_by_user_id;
+                    }
+
                     @if (Model.Status == "Active")
                     {
                         <button class="hp-btn-edit-profile"
@@ -110,15 +117,24 @@
                     else if (Model.Status == "Under Review")
                     {
                         <button class="hp-btn-edit-profile" style="background: #6b7280; padding: 12px 24px; cursor: default; box-shadow: none;" disabled>
-                            Claim Requested (Pending)
+                            @(isClaimer ? "Claim Requested (Pending)" : "Item Claimed")
                         </button>
                     }
                     else if (Model.Status == "Claimed")
                     {
-                        <button class="hp-btn-edit-profile" onclick="resolveItem(@Model.Id, this)" style="background: #10b981; padding: 12px 24px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><path d="M5 13l4 4L19 7"/></svg>
-                            <span style="vertical-align: middle;">Confirm Receipt & Resolve</span>
-                        </button>
+                        @if (isClaimer)
+                        {
+                            <button class="hp-btn-edit-profile" onclick="resolveItem(@Model.Id, this)" style="background: #10b981; padding: 12px 24px; cursor: pointer; box-shadow: 0 2px 8px rgba(16,185,129,0.3);">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;"><path d="M5 13l4 4L19 7"/></svg>
+                                <span style="vertical-align: middle;">Confirm Receipt & Resolve</span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="hp-btn-edit-profile" style="background: #6b7280; padding: 12px 24px; cursor: default; box-shadow: none;" disabled>
+                                Item Claimed
+                            </button>
+                        }
                     }
                     else if (Model.Status == "Resolved")
                     {
@@ -128,7 +144,7 @@
                         </button>
                     }
 
-                    @if (Model.Status == "Active" || Model.Status == "Under Review")
+                    @if (isOwner && (Model.Status == "Active" || Model.Status == "Under Review"))
                     {
                         <div style="margin-left: auto; display: flex; gap: 8px;">
                             <a href="/Items/Edit/@Model.Id" class="btn btn-outline-dark" style="border-radius: 20px; font-weight: 600;">Edit</a>

@@ -5,53 +5,55 @@
     ViewData["Title"] = "Institutional Officer Profile";
 }
 
-<div class="page-header" style="margin-bottom: 32px;">
+<div class="page-header" style="margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-end;">
     <div class="page-title">
         <h2>Institutional Officer Profile</h2>
-        <p>Manage your account credentials and security settings.</p>
+        <p>Your official administrative credentials and clearance information.</p>
+    </div>
+    <div class="page-actions">
+        <a href="/Admin/EditAdminProfile" class="btn-action" style="background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+            <i class="fas fa-edit"></i>
+            Edit Profile
+        </a>
     </div>
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+<div style="display: grid; grid-template-columns: 1fr; max-width: 800px; gap: 32px;">
     
-    <!-- Profile Details -->
-    <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-        <h3 style="margin-top: 0; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 24px;">Personal Information</h3>
-        <form asp-action="UpdateProfile" method="post">
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">Full Registered Name</label>
-                <input type="text" name="user_name" value="@Model?.user_name" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
+    <!-- Profile Card -->
+    <div style="background: white; border-radius: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e2e8f0;">
+        <div style="background: #0f172a; padding: 40px; color: white;">
+            <div style="display: flex; align-items: center; gap: 24px;">
+                <div style="background: white; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 32px; font-weight: 800; color: #0f172a;">@Model?.user_name?.Substring(0, 1).ToUpper()</span>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 24px; font-weight: 700;">@Model?.user_name</h3>
+                    <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 14px;">Officer Status: <span style="color: #10b981; font-weight: 600;">ACTIVE</span></p>
+                </div>
             </div>
+        </div>
 
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">Officer Email Address</label>
-                <input type="email" name="user_email" value="@Model?.user_email" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
+        <div style="padding: 40px;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px;">
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Full Name</label>
+                    <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">@Model?.user_name</p>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Institutional Email</label>
+                    <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">@Model?.user_email</p>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">System Clearance</label>
+                    <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;"><span style="background: #f1f5f9; padding: 4px 12px; border-radius: 20px; font-size: 13px;">@Model?.role</span></p>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Account Age</label>
+                    <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">@((DateTime.Now - (Model?.created_at ?? DateTime.Now)).Days) Days</p>
+                </div>
             </div>
-
-            <div style="margin-bottom: 24px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">System Clearance Role</label>
-                <input type="text" value="@Model?.role" readonly style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: #f8fafc; color: #64748b; cursor: not-allowed;" />
-            </div>
-
-            <button type="submit" style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;">Update Profile Information</button>
-        </form>
+        </div>
     </div>
 
-    <!-- Security/Password Card -->
-    <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-        <h3 style="margin-top: 0; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 24px;">Security & Access</h3>
-        <form asp-action="ChangePassword" method="post">
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">Current Authentication Password</label>
-                <input type="password" name="currentPassword" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">New Access Key</label>
-                <input type="password" name="newPassword" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
-            </div>
-
-            <button type="submit" style="background: #0f172a; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;">Update Access Key</button>
-        </form>
-    </div>
 </div>

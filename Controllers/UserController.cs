@@ -28,11 +28,31 @@ namespace Lost_Found.Controllers
 
         public IActionResult Profile()
         {
-            if (HttpContext.Session.GetInt32("UserId") == null)
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
             {
                 return RedirectToAction("Login");
             }
-            return View();
+
+            var user = db.Users
+                         .Where(u => u.user_id == userId)
+                         .Select(u => new User
+                         {
+                             user_id = u.user_id,
+                             user_name = u.user_name,
+                             user_email = u.user_email,
+                             role = u.role,
+                             created_at = u.created_at,
+                             ReportedItems = db.Items.Where(i => i.user_id == u.user_id).ToList()
+                         })
+                         .FirstOrDefault();
+
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View(user);
         }
 
         public IActionResult Register()
@@ -114,6 +134,53 @@ namespace Lost_Found.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
+        }
+
+        public async Task<IActionResult> EditProfile()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var user = await db.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(string user_name, string password)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var user = await db.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            if (!string.IsNullOrEmpty(user_name))
+            {
+                user.user_name = user_name;
+                HttpContext.Session.SetString("UserName", user_name);
+            }
+
+            if (!string.IsNullOrEmpty(password))
+            {
+                user.password = password;
+            }
+
+            await db.SaveChangesAsync();
+            return RedirectToAction("Profile");
         }
     }
 }

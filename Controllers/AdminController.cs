@@ -100,5 +100,52 @@ namespace Lost_Found.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login", "User");
         }
+
+        public async Task<IActionResult> EditAdminProfile()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var admin = await _db.Users.FindAsync(userId);
+            if (admin == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            return View(admin);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAdminProfile(string user_name, string password)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var admin = await _db.Users.FindAsync(userId);
+            if (admin == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            if (!string.IsNullOrEmpty(user_name))
+            {
+                admin.user_name = user_name;
+                HttpContext.Session.SetString("UserName", user_name);
+            }
+
+            if (!string.IsNullOrEmpty(password))
+            {
+                admin.password = password;
+            }
+
+            await _db.SaveChangesAsync();
+            return RedirectToAction("AdminProfile");
+        }
     }
 }
