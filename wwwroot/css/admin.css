@@ -1,0 +1,226 @@
+:root {
+    --admin-primary: #10b981;
+    --admin-secondary: #0f172a;
+    --admin-bg: #f8fafc;
+    --admin-sidebar-w: 260px;
+    --admin-accent: #3b82f6;
+    --admin-danger: #ef4444;
+    --admin-warning: #f59e0b;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    background-color: var(--admin-bg);
+    color: #1e293b;
+}
+
+/* Layout */
+.sidebar {
+    width: var(--admin-sidebar-w);
+    background-color: var(--admin-secondary);
+    color: #fff;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+}
+
+.main-content {
+    margin-left: var(--admin-sidebar-w);
+    padding: 32px;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.logo {
+    padding: 30px 24px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 24px 12px;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.sidebar-menu li {
+    margin-bottom: 4px;
+}
+
+.sidebar-menu a {
+    color: #94a3b8;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu a:hover, .sidebar-menu a.active {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+.sidebar-menu a.active {
+    background: var(--admin-primary);
+    color: #fff;
+}
+
+.sidebar-menu i {
+    width: 20px;
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+/* Dashboard Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-info h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-info p {
+    margin: 8px 0 0 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.stat-icon.users { background: #ecfdf5; color: #10b981; }
+.stat-icon.items { background: #eff6ff; color: #3b82f6; }
+.stat-icon.claims { background: #fff7ed; color: #f59e0b; }
+
+/* Tables */
+.table-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    background: #f8fafc;
+    padding: 16px 24px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+}
+
+.admin-table tr:hover {
+    background: #f8fafc;
+}
+
+/* Badges */
+.badge {
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-pending { background: #fef3c7; color: #d97706; }
+.badge-active { background: #dcfce7; color: #15803d; }
+.badge-blocked { background: #fee2e2; color: #b91c1c; }
+
+/* Buttons */
+.btn-action {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete { color: #ef4444; }
+.btn-delete:hover { background: #fee2e2; }
+.btn-block { color: #f59e0b; }
+.btn-block:hover { background: #fef3c7; }
+.btn-unblock { color: #10b981; }
+.btn-unblock:hover { background: #dcfce7; }
+
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+}
+.page-title p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    color: #64748b;
+}

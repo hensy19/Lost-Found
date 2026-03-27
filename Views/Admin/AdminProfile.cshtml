@@ -1,0 +1,57 @@
+@model Lost_Found.Models.User
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Institutional Officer Profile";
+}
+
+<div class="page-header" style="margin-bottom: 32px;">
+    <div class="page-title">
+        <h2>Institutional Officer Profile</h2>
+        <p>Manage your account credentials and security settings.</p>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+    
+    <!-- Profile Details -->
+    <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 24px;">Personal Information</h3>
+        <form asp-action="UpdateProfile" method="post">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">Full Registered Name</label>
+                <input type="text" name="user_name" value="@Model?.user_name" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">Officer Email Address</label>
+                <input type="email" name="user_email" value="@Model?.user_email" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">System Clearance Role</label>
+                <input type="text" value="@Model?.role" readonly style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: #f8fafc; color: #64748b; cursor: not-allowed;" />
+            </div>
+
+            <button type="submit" style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;">Update Profile Information</button>
+        </form>
+    </div>
+
+    <!-- Security/Password Card -->
+    <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 24px;">Security & Access</h3>
+        <form asp-action="ChangePassword" method="post">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">Current Authentication Password</label>
+                <input type="password" name="currentPassword" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #64748b;">New Access Key</label>
+                <input type="password" name="newPassword" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;" />
+            </div>
+
+            <button type="submit" style="background: #0f172a; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer;">Update Access Key</button>
+        </form>
+    </div>
+</div>

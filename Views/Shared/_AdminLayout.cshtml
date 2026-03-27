@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Admin Portal</title>
+    <link rel="stylesheet" href="~/css/admin.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+    <!-- Premium Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <i class="fas fa-shield-halved" style="color: #10b981; margin-right: 10px;"></i>
+            <span>Lost & Found</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="@Url.Action("Dashboard", "Admin")" class="@(ViewBag.ActivePage == "Dashboard" ? "active" : "")">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("LostItems", "Admin")" class="@(ViewBag.ActivePage == "LostItems" ? "active" : "")">
+                    <i class="fas fa-search"></i> Lost Items
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("FoundItems", "Admin")" class="@(ViewBag.ActivePage == "FoundItems" ? "active" : "")">
+                    <i class="fas fa-box"></i> Found Items
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("ManageClaims", "Admin")" class="@(ViewBag.ActivePage == "ManageClaims" ? "active" : "")">
+                    <i class="fas fa-hand-holding-heart"></i> Manage Claims
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("ManageUsers", "Admin")" class="@(ViewBag.ActivePage == "ManageUsers" ? "active" : "")">
+                    <i class="fas fa-users-gear"></i> Manage Users
+                </a>
+            </li>
+            <li style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                <a href="@Url.Action("AdminProfile", "Admin")" class="@(ViewBag.ActivePage == "Profile" ? "active" : "")">
+                    <i class="fas fa-user-circle"></i> Profile
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Logout", "Admin")" style="color: #ef4444;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        @RenderBody()
+    </div>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

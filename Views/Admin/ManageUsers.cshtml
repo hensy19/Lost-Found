@@ -1,0 +1,106 @@
+@model IEnumerable<Lost_Found.Models.User>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Campus User Audit";
+    var currentUserEmail = Context.Session.GetString("UserEmail") ?? "";
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h2>Campus User Audit</h2>
+        <p>Review and moderate registered campus members.</p>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Full Name</th>
+                <th>Email Address</th>
+                <th>Campus Role</th>
+                <th>Status</th>
+                <th>Joined Date</th>
+                <th style="text-align: right;">Moderate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr id="user-row-@user.user_id">
+                    <td style="color: #64748b; font-weight: 500;">#@user.user_id</td>
+                    <td style="font-weight: 700;">@user.user_name</td>
+                    <td style="color: #64748b;">@user.user_email</td>
+                    <td>
+                        <span class="badge" style="background: @(user.role == Lost_Found.Models.UserRole.Admin ? "#e0f2fe" : "#f1f5f9"); color: @(user.role == Lost_Found.Models.UserRole.Admin ? "#0284c7" : "#475569");">
+                            @user.role
+                        </span>
+                    </td>
+                    <td>
+                        <span id="badge-@user.user_id" class="badge @(user.IsBlocked ? "badge-blocked" : "badge-active")">
+                            @(user.IsBlocked ? "Blocked" : "Active")
+                        </span>
+                    </td>
+                    <td style="color: #94a3b8;">@user.created_at.ToString("MMM dd, yyyy")</td>
+                    <td style="text-align: right;">
+                        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                            <button onclick="toggleBlock(@user.user_id, this)" 
+                                    class="btn-action @(user.IsBlocked ? "btn-unblock" : "btn-block")" 
+                                    title="@(user.IsBlocked ? "Authorize Access" : "Restrict Access")">
+                                <i class="fas @(user.IsBlocked ? "fa-unlock" : "fa-user-slash")"></i>
+                            </button>
+                            <button onclick="deleteUser(@user.user_id)" class="btn-action btn-delete" title="Erase Record">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleBlock(id, btn) {
+            if (!confirm('Are you sure you want to change this user status?')) return;
+            
+            fetch('/Admin/BlockUser/' + id, { method: 'POST' })
+                .then(res => {
+                    if (res.ok) {
+                        const badge = document.getElementById('badge-' + id);
+                        const isBlocked = badge.classList.contains('badge-blocked');
+                        
+                        if (isBlocked) {
+                            badge.classList.remove('badge-blocked');
+                            badge.classList.add('badge-active');
+                            badge.textContent = 'Active';
+                            btn.classList.remove('btn-unblock');
+                            btn.classList.add('btn-block');
+                            btn.innerHTML = '<i class="fas fa-user-slash"></i>';
+                        } else {
+                            badge.classList.add('badge-blocked');
+                            badge.classList.remove('badge-active');
+                            badge.textContent = 'Blocked';
+                            btn.classList.add('btn-unblock');
+                            btn.classList.remove('btn-block');
+                            btn.innerHTML = '<i class="fas fa-unlock"></i>';
+                        }
+                    }
+                });
+        }
+
+        function deleteUser(id) {
+            if (!confirm('CRITICAL: This will permanently erase the user and all their activity. Proceed?')) return;
+            
+            fetch('/Admin/DeleteUser/' + id, { method: 'POST' })
+                .then(res => {
+                    if (res.ok) {
+                        document.getElementById('user-row-' + id).remove();
+                    }
+                });
+        }
+    </script>
+}

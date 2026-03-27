@@ -1,0 +1,194 @@
+@model IEnumerable<Lost_Found.Models.Item>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "My Claims";
+}
+
+<div class="hp-page-bg" style="min-height: 100vh; padding: 40px 0;">
+    <div class="hp-container">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div>
+                <h1 style="font-size: 28px; font-weight: 700; color: #111827; margin: 0;">My Claims</h1>
+                <p style="color: #6b7280; font-size: 14px; margin: 4px 0 0 0;">View and track the status of your item claims.</p>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div style="background: white; border-radius: 12px; padding: 16px 24px; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 32px;">
+            <label style="color: #6b7280; font-size: 14px; font-weight: 500;">Filter by status:</label>
+            <select id="statusFilter" onchange="filterClaims()" class="form-select" style="border: none; background: #f9fafb; border-radius: 8px; font-weight: 500; font-size: 14px; cursor: pointer; padding: 8px 36px 8px 16px;">
+                <option value="All">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+
+        <!-- Main Claims Table -->
+        <div style="background: white; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <th style="padding: 20px 24px; font-weight: 600; color: #374151; font-size: 14px; border-bottom: 2px solid #f3f4f6;">Item Name</th>
+                        <th style="padding: 20px 24px; font-weight: 600; color: #374151; font-size: 14px; border-bottom: 2px solid #f3f4f6;">Date</th>
+                        <th style="padding: 20px 24px; font-weight: 600; color: #374151; font-size: 14px; border-bottom: 2px solid #f3f4f6;">Status</th>
+                        <th style="padding: 20px 24px; font-weight: 600; color: #374151; font-size: 14px; border-bottom: 2px solid #f3f4f6;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="claimsTableBody">
+                    @if (!Model.Any())
+                    {
+                        <tr id="emptyRow">
+                            <td colspan="4" style="text-align: center; padding: 48px 24px; color: #6b7280;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5" style="margin-bottom: 16px;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                                <p style="margin: 0; font-size: 16px; font-weight: 500;">You haven't requested to claim any items yet.</p>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr id="noResultsRow" style="display: none;">
+                            <td colspan="4" style="text-align: center; padding: 48px 24px; color: #6b7280;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5" style="margin-bottom: 16px;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                                <p style="margin: 0; font-size: 16px; font-weight: 500;">No claims match the selected status.</p>
+                            </td>
+                        </tr>
+                        foreach (var item in Model)
+                        {
+                            var displayStatus = "Pending";
+                            if (item.Status == "Claimed" || item.Status == "Resolved") displayStatus = "Approved";
+                            else if (item.Status == "Rejected") displayStatus = "Rejected";
+
+                            <tr class="claim-row" data-status="@displayStatus" style="border-bottom: 1px solid #f3f4f6; transition: background 0.2s;">
+                                <td style="padding: 20px 24px; font-weight: 500; color: #111827;">@item.Title</td>
+                                <td style="padding: 20px 24px; color: #6b7280; font-size: 14px;">@item.Date.ToString("MMMM dd, yyyy")</td>
+                                <td style="padding: 20px 24px;">
+                                    @{
+                                        var badgeBg = "#f3f4f6";
+                                        var badgeColor = "#4b5563";
+                                        var statusText = "Pending";
+
+                                        if (item.Status == "Under Review")
+                                        {
+                                            badgeBg = "#fef3c7"; // Yellow
+                                            badgeColor = "#d97706";
+                                            statusText = "Pending";
+                                        }
+                                        else if (item.Status == "Claimed" || item.Status == "Resolved")
+                                        {
+                                            badgeBg = "#d1fae5"; // Green
+                                            badgeColor = "#059669";
+                                            statusText = "Approved";
+                                        }
+                                        else if (item.Status == "Rejected")
+                                        {
+                                            badgeBg = "#fee2e2"; // Red
+                                            badgeColor = "#dc2626";
+                                            statusText = "Rejected";
+                                        }
+                                    }
+                                    <span style="background: @badgeBg; color: @badgeColor; padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block;">
+                                        @statusText
+                                    </span>
+                                </td>
+                                <td style="padding: 20px 24px;">
+                                    <a href="/Items/Details/@item.Id" style="display: inline-flex; align-items: center; gap: 6px; color: #111827; text-decoration: none; font-weight: 600; font-size: 14px;">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.Any())
+        {
+            <!-- Claim Details Breakdown Section -->
+            <div id="claimDetailsSection" style="margin-top: 48px;">
+                <h2 style="font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 24px;">Claim Details</h2>
+                
+                <div id="detailsNoResults" style="display: none; background: white; border-radius: 12px; padding: 32px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.03); color: #6b7280;">
+                    <p style="margin: 0;">No details to display for the selected status.</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    @foreach (var item in Model)
+                    {
+                        var borderLeftColor = "#e5e7eb";
+                        var statusText = "Pending";
+                        var badgeBg = "#f3f4f6";
+                        var badgeColor = "#4b5563";
+
+                        if (item.Status == "Under Review") { borderLeftColor = "#f59e0b"; statusText = "Pending"; badgeBg = "#fef3c7"; badgeColor = "#d97706"; }
+                        else if (item.Status == "Claimed" || item.Status == "Resolved") { borderLeftColor = "#10b981"; statusText = "Approved"; badgeBg = "#d1fae5"; badgeColor = "#059669"; }
+                        else if (item.Status == "Rejected") { borderLeftColor = "#ef4444"; statusText = "Rejected"; badgeBg = "#fee2e2"; badgeColor = "#dc2626"; }
+
+                        <div class="claim-detail-card" data-status="@statusText" style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border-left: 4px solid @borderLeftColor; display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <h3 style="font-size: 16px; font-weight: 600; color: #111827; margin: 0 0 4px 0;">@item.Title</h3>
+                                <span style="font-size: 13px; color: #9ca3af;">@item.Date.ToString("MMMM dd, yyyy")</span>
+                                
+                                @if (statusText == "Approved")
+                                {
+                                    <div style="margin-top: 16px; font-size: 14px; color: #374151;">
+                                        <span style="font-weight: 600; color: #111827;">Admin Feedback:</span> Please visit the primary security desk at your earliest convenience to retrieve your property. Bring your student ID.
+                                    </div>
+                                }
+                            </div>
+                            <span style="background: @badgeBg; color: @badgeColor; padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600;">@statusText</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function filterClaims() {
+        const filterValue = document.getElementById("statusFilter").value;
+        const rows = document.querySelectorAll(".claim-row");
+        const cards = document.querySelectorAll(".claim-detail-card");
+        const noResultsRow = document.getElementById("noResultsRow");
+        const detailsNoResults = document.getElementById("detailsNoResults");
+        const detailSection = document.getElementById("claimDetailsSection");
+
+        let visibleCount = 0;
+
+        // Filter Table Rows
+        rows.forEach(row => {
+            if (filterValue === "All" || row.getAttribute("data-status") === filterValue) {
+                row.style.display = "table-row";
+                visibleCount++;
+            } else {
+                row.style.display = "none";
+            }
+        });
+
+        // Show/Hide Table No Results
+        if (noResultsRow) {
+            noResultsRow.style.display = (visibleCount === 0 && rows.length > 0) ? "table-row" : "none";
+        }
+
+        // Filter Detail Cards
+        let cardsVisible = 0;
+        cards.forEach(card => {
+            if (filterValue === "All" || card.getAttribute("data-status") === filterValue) {
+                card.style.display = "flex";
+                cardsVisible++;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Show/Hide Details No Results
+        if (detailsNoResults) {
+            detailsNoResults.style.display = (cardsVisible === 0 && cards.length > 0) ? "block" : "none";
+        }
+    }
+</script>

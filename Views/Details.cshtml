@@ -1,0 +1,56 @@
+@model dynamic
+@{
+    ViewBag.Title = "Claim Details";
+    ViewBag.ActivePage = "ManageClaims";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Claim Details</h2>
+
+    <!-- Claim Info Card -->
+    <div class="card p-4 shadow-sm mb-4">
+        <p><strong>Claim ID:</strong> @Model.ClaimId</p>
+        <p><strong>Item ID:</strong> @Model.ItemId</p>
+        <p><strong>User ID:</strong> @Model.UserId</p>
+        <p><strong>Description:</strong> @Model.Description</p>
+        <p><strong>Status:</strong> <span class="badge badge-@GetStatusClass(Model.Status)">@Model.Status</span></p>
+        <p><strong>Created At:</strong> @Model.CreatedAt.ToString("dd MMM yyyy")</p>
+    </div>
+
+    <!-- Admin Remarks & Status Update -->
+    @using (Html.BeginForm("UpdateStatus", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="ClaimId" value="@Model.ClaimId" />
+
+        <div class="form-group mb-3">
+            <label>Admin Remarks</label>
+            <textarea name="AdminRemarks" class="form-control" rows="3">@Model.AdminRemarks</textarea>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <button type="submit" name="status" value="Under Review" class="btn btn-primary">Under Review</button>
+            <button type="submit" name="status" value="Approved" class="btn btn-success">Approve</button>
+            <button type="submit" name="status" value="Rejected" class="btn btn-danger">Reject</button>
+            <button type="submit" name="status" value="Returned" class="btn btn-purple">Returned</button>
+            <button type="submit" name="status" value="Closed" class="btn btn-secondary">Close</button>
+        </div>
+    }
+</div>
+
+@functions {
+    public string GetStatusClass(string status)
+    {
+        switch (status)
+        {
+            case "Pending": return "warning";
+            case "Under Review": return "primary";
+            case "Approved": return "success";
+            case "Rejected": return "danger";
+            case "Returned": return "purple";
+            case "Closed": return "secondary";
+            default: return "light";
+        }
+    }
+}

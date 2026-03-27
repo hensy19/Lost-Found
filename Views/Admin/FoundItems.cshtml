@@ -1,0 +1,67 @@
+@model IEnumerable<Lost_Found.Models.Item>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Found Item Registry";
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h2>Found Item Registry</h2>
+        <p>Review and audit all items recovered across campus.</p>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Batch #ID</th>
+                <th>Item Image</th>
+                <th>Item Name</th>
+                <th>Location Discovered</th>
+                <th>Current Status</th>
+                <th>Date Logged</th>
+                <th style="text-align: right;">Moderate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">No items currently registered in the "Found" database.</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="color: #64748b; font-weight: 500;">#@item.Id</td>
+                        <td>
+                            <img src="@item.ImagePath" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;" onerror="this.src='/images/default.png'" />
+                        </td>
+                        <td style="font-weight: 700;">@item.Title</td>
+                        <td style="color: #64748b;">@item.Location</td>
+                        <td>
+                            @{
+                                var statusClass = "badge-pending";
+                                if (item.Status == "Claimed") statusClass = "badge-active";
+                            }
+                            <span class="badge @statusClass">@item.Status</span>
+                        </td>
+                        <td style="color: #94a3b8;">@item.Date.ToString("MMM dd, yyyy")</td>
+                        <td style="text-align: right;">
+                            <a href="@Url.Action("Details", "Items", new { id = item.Id })" class="btn-action" style="color: #3b82f6;" title="Quick View">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            <a href="@Url.Action("Edit", "Items", new { id = item.Id })" class="btn-action" style="color: #64748b;" title="Edit Registry Entry">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

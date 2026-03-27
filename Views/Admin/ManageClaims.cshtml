@@ -1,0 +1,127 @@
+@model IEnumerable<Lost_Found.Models.Item>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Claim Resolution Management";
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h2>Claim Management</h2>
+        <p>Review property ownership requests and authorize item returns.</p>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Batch #ID</th>
+                <th>Claimant</th>
+                <th>Item Context</th>
+                <th>Type</th>
+                <th>Current Status</th>
+                <th>Date Logged</th>
+                <th style="text-align: right;">Moderate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">No active property claims currently require administrative attention.</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var claim in Model)
+                {
+                    <tr id="claim-row-@claim.Id">
+                        <td style="color: #64748b; font-weight: 500;">#@claim.Id</td>
+                        <td style="font-weight: 700;">
+                            @if (claim.claimed_by_user_id != null)
+                            {
+                                @* Assuming we might need to join or just show the ID for now if user detail is not loaded *@
+                                <span>User #@claim.claimed_by_user_id</span>
+                            }
+                            else
+                            {
+                                <span style="color: #94a3b8;">N/A</span>
+                            }
+                        </td>
+                        <td style="font-weight: 600;">@claim.Title</td>
+                        <td>
+                            <span class="badge" style="background: @(claim.Type == "Lost" ? "#fee2e2" : "#dcfce7"); color: @(claim.Type == "Lost" ? "#ef4444" : "#15803d");">
+                                @claim.Type
+                            </span>
+                        </td>
+                        <td>
+                            @{
+                                var statusClass = "badge-pending";
+                                if (claim.Status == "Claimed" || claim.Status == "Resolved") statusClass = "badge-active";
+                                else if (claim.Status == "Rejected") statusClass = "badge-blocked";
+                            }
+                            <span id="badge-@claim.Id" class="badge @statusClass">@claim.Status</span>
+                        </td>
+                        <td style="color: #94a3b8;">@claim.Date.ToString("MMM dd, yyyy")</td>
+                        <td style="text-align: right;">
+                            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                                @if (claim.Status == "Under Review")
+                                {
+                                    <button onclick="approveClaim(@claim.Id, this)" class="btn-action" style="color: #10b981;" title="Approve Claim">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>
+                                    <button onclick="rejectClaim(@claim.Id, this)" class="btn-action" style="color: #ef4444;" title="Reject Claim">
+                                        <i class="fas fa-times-circle"></i>
+                                    </button>
+                                }
+                                <a href="@Url.Action("Details", "Items", new { id = claim.Id })" class="btn-action" style="color: #3b82f6;" title="Full Investigation">
+                                    <i class="fas fa-search"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        function approveClaim(id, btn) {
+            if (!confirm('By approving this, you authorize the release of campus property. Proceed?')) return;
+            
+            fetch('/Items/ApproveClaim/' + id, { method: 'POST' })
+                .then(res => {
+                    if (res.ok) {
+                        const badge = document.getElementById('badge-' + id);
+                        badge.classList.remove('badge-pending');
+                        badge.classList.add('badge-active');
+                        badge.textContent = 'Claimed';
+                        btn.parentElement.innerHTML = '<span style="color: #64748b; font-size: 11px;">Claim Processed</span>';
+                    }
+                });
+        }
+
+        function rejectClaim(id, btn) {
+            if (!confirm('By rejecting this, you will return the item to the public registry. Proceed?')) return;
+            
+            fetch('/Items/RejectClaim/' + id, { method: 'POST' })
+                .then(res => {
+                    if (res.ok) {
+                        const badge = document.getElementById('badge-' + id);
+                        badge.classList.remove('badge-pending');
+                        badge.classList.add('badge-blocked');
+                        badge.textContent = 'Rejected';
+                        btn.parentElement.innerHTML = '<span style="color: #ef4444; font-size: 11px;">Claim Denied</span>';
+                        
+                        // Optional: Fade out row since it's no longer "Under Review"
+                        setTimeout(() => {
+                            document.getElementById('claim-row-' + id).style.opacity = '0.5';
+                        }, 500);
+                    }
+                });
+        }
+    </script>
+}

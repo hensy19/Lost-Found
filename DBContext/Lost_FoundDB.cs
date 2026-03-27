@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Lost_Found.Models;
 
 namespace Lost_Found.DBContext
@@ -11,5 +11,6 @@ namespace Lost_Found.DBContext
 
         public DbSet<User> Users { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }

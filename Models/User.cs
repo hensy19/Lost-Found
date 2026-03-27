@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,8 +30,16 @@ namespace Lost_Found.Models
         [Required(ErrorMessage = "Role is required")]
         public UserRole role { get; set; }
 
+        public bool IsBlocked { get; set; } = false;
+
         public DateTime created_at { get; set; } = DateTime.Now;
 
         public ICollection<Notification>? Notifications { get; set; }
+
+        [InverseProperty("Reporter")]
+        public ICollection<Item>? ReportedItems { get; set; }
+
+        [InverseProperty("Claimer")]
+        public ICollection<Item>? ClaimedItems { get; set; }
     }
 }

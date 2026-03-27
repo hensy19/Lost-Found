@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Lost_Found.Models;
 using Lost_Found.DBContext;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Lost_Found.Controllers
 {
@@ -60,11 +64,8 @@ namespace Lost_Found.Controllers
                 return View(user);
             }
 
-            // Set default role if not specified
-            if (user.role == 0)
-            {
-                user.role = UserRole.User;
-            }
+            // No default role override - we trust the value from the form
+            // (Note: Admin = 0, User = 1)
 
             db.Users.Add(user);
             await db.SaveChangesAsync();
@@ -100,6 +101,12 @@ namespace Lost_Found.Controllers
             HttpContext.Session.SetString("UserName", user.user_name ?? "User");
             HttpContext.Session.SetString("UserRole", user.role.ToString());
 
+            // Redirect based on role
+            if (user.role == UserRole.Admin)
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
+            
             return RedirectToAction("Index");
         }
 

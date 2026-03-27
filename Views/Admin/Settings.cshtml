@@ -1,0 +1,76 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "System Preferences";
+}
+
+<div class="page-header" style="margin-bottom: 32px;">
+    <div class="page-title">
+        <h2>System Preferences</h2>
+        <p>Configure administrative dashboard settings and notification layers.</p>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+    
+    <!-- Theme & Display -->
+    <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Interface Configuration</h3>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 24px;">Adjust the visual appearance of your institutional dashboard.</p>
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #f8fafc; border-radius: 12px; margin-bottom: 20px;">
+            <div>
+                <span style="display: block; font-weight: 600; font-size: 14px;">High-Contrast Mode</span>
+                <span style="font-size: 12px; color: #94a3b8;">Improve readability in low light</span>
+            </div>
+            <button onclick="toggleTheme()" id="themeBtn" style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Enable</button>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #f8fafc; border-radius: 12px;">
+            <div>
+                <span style="display: block; font-weight: 600; font-size: 14px;">Compact Navigation</span>
+                <span style="font-size: 12px; color: #94a3b8;">Maximize workspace area</span>
+            </div>
+            <button style="background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Enable</button>
+        </div>
+    </div>
+
+    <!-- Notification Engine -->
+    <div style="background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h3 style="margin-top: 0; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Communication Matrix</h3>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 24px;">Manage how the system alerts you to critical claim activity.</p>
+        
+        <div style="margin-bottom: 16px;">
+            <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;" />
+                <span style="font-size: 14px; font-weight: 500;">Critical Security Alerts</span>
+            </label>
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;" />
+                <span style="font-size: 14px; font-weight: 500;">New Claim Submission Notifications</span>
+            </label>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                <input type="checkbox" style="width: 18px; height: 18px; accent-color: #10b981;" />
+                <span style="font-size: 14px; font-weight: 500;">Weekly Analytics Digest</span>
+            </label>
+        </div>
+
+        <button style="width: 100%; background: #0f172a; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer;">Save All Preferences</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            document.getElementById('themeBtn').textContent = isDark ? 'Disable' : 'Enable';
+            document.getElementById('themeBtn').style.background = isDark ? '#10b981' : '#e2e8f0';
+            document.getElementById('themeBtn').style.color = isDark ? 'white' : 'black';
+        }
+    </script>
+}

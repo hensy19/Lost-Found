@@ -1,0 +1,71 @@
+@model IEnumerable<Lost_Found.Models.Item>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="hp-page-bg">
+    <div class="hp-container">
+        <h2 class="mb-4">Admin Dashboard - Pending Claims</h2>
+        
+        @if (!Model.Any())
+        {
+            <div class="alert alert-success">No pending claim requests.</div>
+        }
+        else
+        {
+            <table class="table table-striped bg-white rounded shadow-sm">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Date Reported</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td><a href="/Items/Details/@item.Id">@item.Title</a></td>
+                            <td>@item.Type</td>
+                            <td>@item.Date.ToShortDateString()</td>
+                            <td>
+                                <button class="btn btn-sm btn-success" onclick="approveClaim(@item.Id, this)">Approve</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<script>
+    function approveClaim(id, btn) {
+        if (!confirm("Approve this claim?")) return;
+        
+        btn.disabled = true;
+        btn.innerText = "Approving...";
+
+        let formData = new FormData();
+        formData.append("id", id);
+
+        fetch('/Items/ApproveClaim', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert("Approval failed.");
+                btn.disabled = false;
+                btn.innerText = "Approve";
+            }
+        });
+    }
+</script>
